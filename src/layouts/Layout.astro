@@ -1,0 +1,87 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Earl Atnip's Place" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<div id="page-wrapper">
+			<div id="content-wrapper">
+				<header>
+					<h1><a href="/">Earl Atnip's Place</a></h1>
+				</header>
+				<main>
+					<slot />
+				</main>
+			</div>
+		</div>
+	</body>
+</html>
+<style is:global>
+	body {
+		background-image: url('https://sites.google.com/site/earlatnipsplace/_/rsrc/1468859288925/config/custom-theme/body-bg.jpg');
+		background-repeat: repeat;
+		font-family: Georgia, 'Times New Roman', Times, serif;
+		color: #000000;
+		margin: 0;
+		padding: 0;
+	}
+
+	#page-wrapper {
+		width: 100%;
+		padding: 20px 0;
+	}
+
+	#content-wrapper {
+		background-color: #fdfdeb;
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 20px 40px;
+		border-radius: 10px;
+		box-shadow: 0 0 15px rgba(0,0,0,0.5);
+	}
+
+	header {
+		background-color: #d9d9d9;
+		padding: 20px;
+		margin: -20px -40px 20px -40px;
+		border-top-left-radius: 10px;
+		border-top-right-radius: 10px;
+		text-align: center;
+	}
+
+	header h1 {
+		margin: 0;
+		font-size: 2.5rem;
+		font-weight: bold;
+	}
+
+	header h1 a {
+		text-decoration: none;
+		color: #000000;
+	}
+
+	a {
+		color: #0000ee;
+	}
+
+	a:visited {
+		color: #551a8b;
+	}
+	
+	h1, h2, h3, h4, h5, h6 {
+		font-family: Georgia, 'Times New Roman', Times, serif;
+	}
+</style>

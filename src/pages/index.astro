@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const posts = (await getCollection('posts')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout title="Earl's Place | Home">
+	<section class="post-list">
+		<h2>Trip Reports & Musings</h2>
+		<ul>
+			{posts.map((post) => (
+				<li class="post-item">
+					<a href={`/posts/${post.slug}/`} class="post-title">
+						<h3>{post.data.title}</h3>
+					</a>
+					<p class="post-date">{post.data.pubDate.toDateString()}</p>
+					<p class="post-description">{post.data.description}</p>
+				</li>
+			))}
+		</ul>
+	</section>
+</Layout>
+
+<style>
+	.post-list h2 {
+		font-size: 1.8rem;
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+	.post-list ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	.post-item {
+		margin-bottom: 2.5rem;
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 1.5rem;
+	}
+	.post-item:last-child {
+		border-bottom: none;
+	}
+	.post-title {
+		text-decoration: none;
+		color: #000;
+	}
+	.post-title:hover h3 {
+		text-decoration: underline;
+	}
+	.post-title h3 {
+		margin: 0 0 0.5rem 0;
+		font-size: 1.5rem;
+	}
+	.post-date {
+		color: #555;
+		font-style: italic;
+		margin-bottom: 0.5rem;
+	}
+	.post-description {
+		margin: 0;
+		line-height: 1.6;
+	}
+</style>

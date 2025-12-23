@@ -1,0 +1,39 @@
+---
+import Layout from './Layout.astro';
+
+const { frontmatter } = Astro.props;
+---
+<Layout title={frontmatter.title}>
+  <article>
+    <h2>{frontmatter.title}</h2>
+    <p class="pub-date">Published on: {new Date(frontmatter.pubDate).toDateString()}</p>
+    <div class="content">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style>
+	article {
+		max-width: 48rem; /* 768px */
+		margin: 0 auto;
+		padding: 1rem 0;
+	}
+	h2 {
+		font-size: 2rem;
+		margin-bottom: 0.5rem;
+	}
+	.pub-date {
+		color: #555;
+		margin-bottom: 2rem;
+		font-style: italic;
+	}
+    .content {
+        line-height: 1.6;
+    }
+    .content :global(img) {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+    }
+</style>
