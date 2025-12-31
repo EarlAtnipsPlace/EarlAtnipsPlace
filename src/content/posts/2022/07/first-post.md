@@ -1,7 +1,6 @@
 ---
 title: 'My First Blog Post'
 description: 'This is the first post on my new blog!'
-pubDate: 2025-12-23
 layout: '@/layouts/ArticleLayout.astro'
 ---
 

@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    tree: Record<string, any>;
+    currentPath: string;
+}
+
+const { tree, currentPath } = Astro.props;
+
+const entries = Object.entries(tree);
+const files: CollectionEntry<'posts'>[] = entries.find(([name]) => name === '__files__')?.[1] || [];
+const directories = entries.filter(([name]) => name !== '__files__');
+
+directories.sort(([a], [b]) => a.localeCompare(b));
+files.sort((a, b) => {
+    const aName = a.slug.split('/').pop() ?? '';
+    const bName = b.slug.split('/').pop() ?? '';
+    return aName.localeCompare(bName);
+});
+
+
+function isNodeActive(node: Record<string, any>, currentPath: string): boolean {
+    if (node.__files__) {
+        if (node.__files__.some((p: CollectionEntry<'posts'>) => `/posts/${p.slug}/` === currentPath)) {
+            return true;
+        }
+    }
+    for (const key in node) {
+        if (key !== '__files__') {
+            if (isNodeActive(node[key], currentPath)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+---
+<ul>
+    {directories.map(([name, node]) => {
+        const isActive = isNodeActive(node, currentPath);
+        return (
+            <li>
+                <details open={isActive}>
+                    <summary>{name}</summary>
+                    <Astro.self tree={node} currentPath={currentPath} />
+                </details>
+            </li>
+        );
+    })}
+    {files.map(post => {
+        const postUrl = `/posts/${post.slug}/`;
+        const isActive = postUrl === currentPath;
+        const fileName = post.slug.split('/').pop();
+        return (
+            <li>
+                <a href={postUrl} class:list={{ "is-active": isActive }}>
+                    {post.data.title || fileName}
+                </a>
+            </li>
+        );
+    })}
+</ul>

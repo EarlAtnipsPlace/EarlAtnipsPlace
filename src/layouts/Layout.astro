@@ -1,87 +1,230 @@
 ---
+import { getCollection } from 'astro:content';
+import FileTree from '../components/FileTree.astro';
+
 interface Props {
 	title: string;
 }
 
 const { title } = Astro.props;
+const allPosts = await getCollection('posts');
+
+const fileTree = {};
+
+for (const post of allPosts) {
+    const parts = post.slug.split('/');
+    let currentLevel = fileTree;
+    for (let i = 0; i < parts.length - 1; i++) {
+        const part = parts[i];
+        if (!currentLevel[part]) {
+            currentLevel[part] = {};
+        }
+        currentLevel = currentLevel[part];
+    }
+    if (!currentLevel.__files__) {
+        currentLevel.__files__ = [];
+    }
+    currentLevel.__files__.push(post);
+}
+
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Earl Atnip's Place" />
+		<meta name="description" content="A simple, modern blog." />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
-		<div id="page-wrapper">
-			<div id="content-wrapper">
-				<header>
-					<h1><a href="/">Earl Atnip's Place</a></h1>
-				</header>
+		<div class="page-container">
+			<header>
+				<h1><a href="/">Earl Atnip's Place</a></h1>
+			</header>
+			<div class="main-content-grid">
+				<aside class="sidebar">
+					<nav>
+						<h3>Posts</h3>
+						<FileTree tree={fileTree} currentPath={currentPath} />
+					</nav>
+				</aside>
 				<main>
 					<slot />
 				</main>
 			</div>
+			<footer>
+				<p>&copy; {new Date().getFullYear()} Earl Atnip's Place. All rights reserved.</p>
+			</footer>
 		</div>
 	</body>
 </html>
+
 <style is:global>
+	:root {
+		--accent-maroon: #800000;
+		--text-main: #333333;
+		--text-header: #ffffff;
+		--bg-outer: #f4f4f4;
+		--bg-inner: #ffffff;
+		--border-light: #e0e0e0;
+		--sidebar-bg: #fdfdfd;
+		--sidebar-width: 280px;
+	}
+
 	body {
-		background-image: url('https://sites.google.com/site/earlatnipsplace/_/rsrc/1468859288925/config/custom-theme/body-bg.jpg');
-		background-repeat: repeat;
-		font-family: Georgia, 'Times New Roman', Times, serif;
-		color: #000000;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+			Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+		background-color: var(--bg-outer);
+		color: var(--text-main);
 		margin: 0;
 		padding: 0;
 	}
 
-	#page-wrapper {
-		width: 100%;
-		padding: 20px 0;
+	.page-container {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
 	}
 
-	#content-wrapper {
-		background-color: #fdfdeb;
-		max-width: 1000px;
+	.main-content-grid {
+		display: grid;
+		grid-template-columns: var(--sidebar-width) 1fr;
+		gap: 2rem;
+		width: 100%;
+		max-width: 1200px;
 		margin: 0 auto;
-		padding: 20px 40px;
-		border-radius: 10px;
-		box-shadow: 0 0 15px rgba(0,0,0,0.5);
+		flex-grow: 1;
+		padding: 2rem;
+	}
+
+	main {
+		background-color: var(--bg-inner);
+		padding: 2rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	}
+
+	.sidebar {
+		background-color: var(--sidebar-bg);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+		padding: 1.5rem;
+		height: fit-content;
+		position: sticky;
+		top: 2rem;
+	}
+
+	.sidebar nav h3 {
+		margin: 0 0 1rem 0;
+		font-size: 1.2rem;
+		color: var(--accent-maroon);
+	}
+
+	.sidebar nav > ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.sidebar details {
+		margin-bottom: 0.5rem;
+	}
+
+	.sidebar summary {
+		cursor: pointer;
+		font-weight: 600;
+		padding: 0.25rem;
+		list-style: none;
+	}
+	.sidebar summary::before {
+		content: '📁';
+		margin-right: 0.5rem;
+	}
+	.sidebar details[open] > summary::before {
+		content: '📂';
+	}
+
+
+	.sidebar details ul {
+		list-style: none;
+		padding-left: 1.5rem;
+		margin-top: 0.5rem;
+	}
+
+	.sidebar details ul li a {
+		display: block;
+		padding: 0.3rem 0.5rem;
+		text-decoration: none;
+		color: var(--text-main);
+		border-radius: 4px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.sidebar details ul li a::before {
+		content: '📄';
+		margin-right: 0.5rem;
+	}
+
+	.sidebar details ul li a:hover {
+		background-color: #f0f0f0;
+	}
+
+	.sidebar details ul li a.is-active {
+		background-color: var(--accent-maroon);
+		color: white;
+		font-weight: 600;
 	}
 
 	header {
-		background-color: #d9d9d9;
-		padding: 20px;
-		margin: -20px -40px 20px -40px;
-		border-top-left-radius: 10px;
-		border-top-right-radius: 10px;
+		background-color: var(--accent-maroon);
+		padding: 1.5rem 2rem;
 		text-align: center;
 	}
 
 	header h1 {
 		margin: 0;
-		font-size: 2.5rem;
-		font-weight: bold;
+		font-size: 2rem;
+		font-weight: 600;
 	}
 
 	header h1 a {
 		text-decoration: none;
-		color: #000000;
+		color: var(--text-header);
+	}
+
+	footer {
+		text-align: center;
+		padding: 1.5rem 2rem;
+		color: #888;
+		font-size: 0.9rem;
+		width: 100%;
+		background-color: var(--bg-outer);
 	}
 
 	a {
-		color: #0000ee;
+		color: var(--accent-maroon);
+		text-decoration: none;
 	}
 
-	a:visited {
-		color: #551a8b;
+	a:hover {
+		text-decoration: underline;
 	}
-	
+
 	h1, h2, h3, h4, h5, h6 {
-		font-family: Georgia, 'Times New Roman', Times, serif;
+		font-weight: 600;
+	}
+
+	/* Responsive adjustments */
+	@media (max-width: 900px) {
+		.main-content-grid {
+			grid-template-columns: 1fr;
+		}
+		.sidebar {
+			position: static;
+			height: auto;
+		}
 	}
 </style>
