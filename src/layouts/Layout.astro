@@ -34,8 +34,10 @@ const currentPath = Astro.url.pathname;
 					</nav>
 				</aside>
 				<main>
-					<slot />
-                    <p>&copy; {new Date().getFullYear()} Earl Atnip's Place. All rights reserved.</p>
+                    <div class="main-content">
+					    <slot />
+                    </div>
+                    <p class="copyright">&copy; {new Date().getFullYear()} Earl Atnip's Place. All rights reserved.</p>
 				</main>
 			</div>
 		</div>
@@ -82,7 +84,21 @@ const currentPath = Astro.url.pathname;
 	main {
 		background-color: #F0EAD6; /* Changed to #F0EAD6 */
 		padding: 2rem;
+        display: flex; /* Added flexbox */
+        flex-direction: column; /* Added flex direction */
+        /* Removed justify-content: space-between; */
 	}
+
+    .main-content {
+        flex-grow: 1; /* Allows content to take up available space */
+    }
+
+    .copyright {
+        margin-top: auto; /* Pushes copyright to the bottom */
+        text-align: center;
+        font-size: 0.9rem;
+        color: #888;
+    }
 
 	.sidebar {
 		background-color: #333; /* Changed to match header */
@@ -117,13 +133,6 @@ const currentPath = Astro.url.pathname;
 		background-color: #666; /* Different shade for active */
 		color: white;
 		font-weight: 600;
-	}
-
-	footer {
-		text-align: center;
-		padding: 1.5rem 2rem;
-		color: #888;
-		font-size: 0.9rem;
 	}
 
 	a {
