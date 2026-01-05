@@ -7,6 +7,7 @@ const postsCollection = defineCollection({
     description: z.string(),
     layout: z.string(),
     postDate: z.date(),
+    hideFromPostList: z.boolean().default(false),
   }),
 });
 
