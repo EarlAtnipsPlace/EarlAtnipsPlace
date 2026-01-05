@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "bun run astro dev",
-    "build": "rm -rf dist && bun run astro build",
+    "build": "bun run astro build",
     "preview": "bun run astro preview",
     "deploy": "bun run build && git add --all && git commit -m \"Site build and deploy\" && git push"
   },
