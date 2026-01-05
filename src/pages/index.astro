@@ -12,15 +12,15 @@ const posts = await getSortedPosts();
         <p>These reports are to provide myself, family and friends memories of good times and also to aid in the recall of details we may have forgotten so they can be referenced for future trips.</p>
 
         <p>
-            <a href="/posts/river-outfitters">River Outfitters</a>
+            <a href="posts/river-outfitters">River Outfitters</a>
             <a href="https://sites.google.com/site/earlatnipsplace/river-gages">River Gages</a>
             <a href="http://www.ozarkpages.com/cgi-bin/stages.pl?ST=level">Ozark Creek Summary</a>
         </p>
 
         <p>
             <a href="https://share.garmin.com/EarlAtnip">Where is Earl?</a>
-            <a href="/posts/earls-bucket-list">Earl's Bucket List</a>
-            <a href="/posts/special-photos">Special Photos</a>
+            <a href="posts/earls-bucket-list">Earl's Bucket List</a>
+            <a href="posts/special-photos">Special Photos</a>
         </p>
     </section>
 
@@ -29,7 +29,7 @@ const posts = await getSortedPosts();
 		<ul>
 			{posts.map((post) => (
 				<li class="post-item">
-					<a href={`/posts/${post.slug}/`} class="post-title">
+					<a href={`posts/${post.slug}/`} class="post-title">
 						<h3>{post.data.title}</h3>
 					</a>
 					<p class="post-description">{post.data.description}</p>

@@ -18,14 +18,14 @@ const currentPath = Astro.url.pathname;
 		<meta charset="UTF-8" />
 		<meta name="description" content="A simple, modern blog." />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href={import.meta.env.BASE_URL + 'favicon.svg'} />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
 		<div class="page-container">
             <header>
-                <h1><a href="/">Earl Atnip's Place</a></h1>
+                <h1><a href={import.meta.env.BASE_URL}>Earl Atnip's Place</a></h1>
             </header>
 			<div class="main-content-grid">
 				<aside class="sidebar">

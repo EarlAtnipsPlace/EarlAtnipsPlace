@@ -10,7 +10,7 @@ const { allPosts, currentPath } = Astro.props;
 ---
 <ul>
     {allPosts.map(post => {
-        const postUrl = `/posts/${post.slug}/`;
+        const postUrl = import.meta.env.BASE_URL + `posts/${post.slug}/`;
         const isActive = postUrl === currentPath;
         return (
             <li>
