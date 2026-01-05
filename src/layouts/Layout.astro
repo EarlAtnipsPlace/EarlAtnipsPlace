@@ -54,7 +54,7 @@ const currentPath = Astro.url.pathname;
 	}
 
     header {
-        background-color: #333;
+        background-color: #660033; /* Changed to #660033 */
         padding: 1rem 2rem;
         text-align: center;
     }
@@ -82,13 +82,14 @@ const currentPath = Astro.url.pathname;
 	}
 
 	main {
-		background-color: #fff;
+		background-color: #F0EAD6; /* Changed to #F0EAD6 */
 		padding: 2rem;
 	}
 
 	.sidebar {
-		background-color: #f0f0f0;
+		background-color: #333; /* Changed to match header */
 		padding: 1.5rem;
+        color: white; /* Changed to white */
 	}
 
 	.sidebar nav h3 {
@@ -106,16 +107,16 @@ const currentPath = Astro.url.pathname;
 		display: block;
 		padding: 0.3rem 0.5rem;
 		text-decoration: none;
-		color: #333;
+		color: white; /* Changed to white */
 		border-radius: 4px;
 	}
 
 	.sidebar nav ul li a:hover {
-		background-color: #e0e0e0;
+		background-color: #555; /* Lighter shade for hover */
 	}
 
 	.sidebar nav ul li a.is-active {
-		background-color: #333;
+		background-color: #666; /* Different shade for active */
 		color: white;
 		font-weight: 600;
 	}
