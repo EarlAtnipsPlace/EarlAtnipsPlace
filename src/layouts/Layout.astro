@@ -26,10 +26,12 @@ const currentPath = Astro.url.pathname;
 	</head>
 	<body>
 		<div class="page-container">
+            <header>
+                <h1><a href="/">Earl Atnip's Place</a></h1>
+            </header>
 			<div class="main-content-grid">
 				<aside class="sidebar">
 					<nav>
-                        <h3><a href="/">Earl Atnip's Place</a></h3>
 						<FileTree allPosts={allPosts} currentPath={currentPath} />
 					</nav>
 				</aside>
@@ -52,6 +54,22 @@ const currentPath = Astro.url.pathname;
 		margin: 0;
 		padding: 0;
 	}
+
+    header {
+        background-color: #333;
+        padding: 1rem 2rem;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    header h1 a {
+        color: white;
+        text-decoration: none;
+    }
 
 	.page-container {
 		display: flex;

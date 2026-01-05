@@ -3,13 +3,30 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
 const posts = (await getCollection('posts')).sort(
-	(a, b) => b.slug.localeCompare(a.slug)
+	(a, b) => b.data.postDate.getTime() - a.data.postDate.getTime()
 );
 ---
 
 <Layout title="Earl's Place | Home">
+    <section class="intro-text">
+        <p>Below is a compilation of most but certainly not all of my trip reports. Missing are most fishing trips to area lakes, rivers and I almost never discuss coastal fishing. My fishing locations along the Texas coast are private unless it is a generic location. This is a lesson learned from many years ago when I was a teenager living on a Texas coastal barrier island. If I told you where I fished, good chance it was a lie, will even lie to my dad about where I fish.</p>
+
+        <p>These reports are to provide myself, family and friends memories of good times and also to aid in the recall of details we may have forgotten so they can be referenced for future trips.</p>
+
+        <p>
+            <a href="https://sites.google.com/site/earlatnipsplace/earl-atnips-place/river-outfitters">River Outfitters</a>
+            <a href="https://sites.google.com/site/earlatnipsplace/river-gages">River Gages</a>
+            <a href="http://www.ozarkpages.com/cgi-bin/stages.pl?ST=level">Ozark Creek Summary</a>
+        </p>
+
+        <p>
+            <a href="https://sites.google.com/site/earlatnipsplace/who-is-earl">Where is Earl?</a>
+            <a href="https://sites.google.com/site/earlatnipsplace/earl-atnips-place/bucket-list">Earl's Bucket List</a>
+            <a href="https://sites.google.com/site/earlatnipsplace/earl-atnips-place/special-photos">Special Photos</a>
+        </p>
+    </section>
+
 	<section class="post-list">
-        <h1><a href="/">Earl Atnip's Place</a></h1>
 		<ul>
 			{posts.map((post) => (
 				<li class="post-item">
@@ -24,6 +41,22 @@ const posts = (await getCollection('posts')).sort(
 </Layout>
 
 <style>
+    .intro-text {
+        margin-bottom: 2rem;
+    }
+    .intro-text p {
+        margin-bottom: 1rem;
+        line-height: 1.6;
+    }
+    .intro-text a {
+        margin-right: 1rem;
+        text-decoration: none;
+        color: #007bff; /* A default link color */
+    }
+    .intro-text a:hover {
+        text-decoration: underline;
+    }
+
 	.post-list h2 {
 		font-size: 1.5rem;
 		font-weight: 500;
@@ -57,12 +90,6 @@ const posts = (await getCollection('posts')).sort(
 	}
 	.post-title:hover h3 {
 		color: #000;
-	}
-	.post-date {
-		color: #888;
-		font-style: italic;
-		margin-bottom: 0.75rem;
-		font-size: 0.9rem;
 	}
 	.post-description {
 		margin: 0;
