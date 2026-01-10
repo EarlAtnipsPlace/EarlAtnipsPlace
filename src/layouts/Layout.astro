@@ -25,10 +25,16 @@ const currentPath = Astro.url.pathname;
 	<body>
 		<div class="page-container">
             <header>
+                <button class="hamburger-menu" aria-label="Open Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <h1><a href={import.meta.env.BASE_URL}>Earl Atnip's Place</a></h1>
             </header>
 			<div class="main-content-grid">
 				<aside class="sidebar">
+                    <button class="close-menu-button" aria-label="Close Menu">&times;</button>
 					<nav>
 						<FileTree allPosts={allPosts} currentPath={currentPath} />
 					</nav>
@@ -41,6 +47,29 @@ const currentPath = Astro.url.pathname;
 				</main>
 			</div>
 		</div>
+        <div class="sidebar-overlay"></div>
+
+        <script>
+            const hamburger = document.querySelector('.hamburger-menu');
+            const sidebar = document.querySelector('.sidebar');
+            const closeButton = document.querySelector('.close-menu-button');
+            const overlay = document.querySelector('.sidebar-overlay');
+
+            function toggleMenu() {
+                sidebar?.classList.toggle('is-open');
+                overlay?.classList.toggle('is-visible');
+            }
+
+            hamburger?.addEventListener('click', toggleMenu);
+            closeButton?.addEventListener('click', toggleMenu);
+            overlay?.addEventListener('click', toggleMenu);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sidebar?.classList.contains('is-open')) {
+                    toggleMenu();
+                }
+            });
+        </script>
 	</body>
 </html>
 
@@ -64,6 +93,10 @@ const currentPath = Astro.url.pathname;
         background-color: #660033; /* The dark purple/burgundy background color for the header bar */
         padding: 1rem 2rem; /* Adds space inside the header, above/below and left/right of the title */
         text-align: center; /* Centers the text (site title) within the header */
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1001;
     }
 
     /*
@@ -72,6 +105,7 @@ const currentPath = Astro.url.pathname;
     header h1 {
         margin: 0; /* Removes any default spacing around the title */
         font-size: 1.5rem; /* Sets the size of the site title text */
+        flex-grow: 1;
     }
 
     /*
@@ -136,6 +170,7 @@ const currentPath = Astro.url.pathname;
 		background-color: #333; /* The dark gray background color for the sidebar, matching the header */
 		padding: 1.5rem; /* Adds space inside the sidebar, around the post list */
         color: white; /* Sets the default text color within the sidebar to white */
+        position: relative;
 	}
 
 	/*
@@ -197,12 +232,81 @@ const currentPath = Astro.url.pathname;
 		font-weight: 600; /* Makes all headings bold */
 	}
 
+    .hamburger-menu {
+        display: none; /* Hidden by default */
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.5rem;
+        margin-right: 1rem;
+    }
+
+    .hamburger-menu span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px 0;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .close-menu-button {
+        display: none; /* Hidden by default, shown in media query */
+        position: absolute;
+        top: 1rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1001;
+    }
+
+    .sidebar-overlay.is-visible {
+        display: block;
+    }
+
 	/*
 	  This section handles how the layout changes on smaller screens (like phones or tablets).
 	*/
 	@media (max-width: 900px) {
 		.main-content-grid {
-			grid-template-columns: 1fr; /* On small screens, the sidebar and main content stack vertically, each taking full width */
+			grid-template-columns: 1fr; /* On small screens, the main content takes full width */
 		}
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -270px; /* Hidden off-screen */
+            width: 240px;
+            height: 100%;
+            z-index: 1002;
+            transition: left 0.3s ease-in-out;
+            overflow-y: auto;
+        }
+
+        .sidebar.is-open {
+            left: 0; /* Slide in */
+        }
+
+        .sidebar.is-open .close-menu-button {
+            display: block;
+        }
+
+        .hamburger-menu {
+            display: block; /* Show the hamburger menu */
+        }
 	}
 </style>
