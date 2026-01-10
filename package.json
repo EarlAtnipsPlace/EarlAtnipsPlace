@@ -6,8 +6,8 @@
     "dev": "bun run astro dev",
     "build": "bun run astro build && touch docs/.nojekyll",
     "preview": "bun run astro preview",
-    "deploy": "bun run build && git add --all && git commit -m \"Site build and deploy\" && git push"
-    "pull": "git pull",
+    "deploy": "bun run build && git add --all && git commit -m \"Site build and deploy\" && git push",
+    "pull": "git pull"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
